@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Mothership from './Mothership';
-import registerServiceWorker from './registerServiceWorker';
+import {BrowserRouter as Router} from 'react-router-dom'
+// import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<Mothership />, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(<Router>
+    <Mothership />
+    </Router>, document.getElementById('root'));
+// registerServiceWorker();
