@@ -12,5 +12,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "main": "Area51/HomeyAirport.js",
+  "proxy": "http://localhost:3030"
 }
