@@ -1,14 +1,13 @@
 const express = require('express')
     , bodyParser = require('body-parser')
     , dotenv = require('dotenv').config()
+    , control = require('./GroomLake')
 
     const app = new express()
 
     app.use(bodyParser.json())
 
-    app.get('/api/test', (req,res) => {
-        res.send('hello')
-    })
+    app.get('/api/getComp', control.getComp)
 
 
     const SERVER_PORT = process.env.SERVER_PORT
