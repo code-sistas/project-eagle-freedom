@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import NavShell from './components/NavShell'
+import NavShell from './components/NavComp/NavShell'
 
 import AllTabs from './components/AllTab'
 import JsAss from './components/JsAss'

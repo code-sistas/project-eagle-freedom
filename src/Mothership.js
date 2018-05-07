@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavShell from './components/NavShell'
+import NavShell from './components/NavComp/NavShell'
 import './App.css';
 import Routes from './routes'
 
