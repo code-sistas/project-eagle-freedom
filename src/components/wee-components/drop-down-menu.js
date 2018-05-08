@@ -15,7 +15,6 @@ export default class dropDown extends Component{
     }
 
     render(){
-        console.log(this.state.selected)
         return(
             <div>
                 <select onChange={e=>this.select(e.target.value)}>

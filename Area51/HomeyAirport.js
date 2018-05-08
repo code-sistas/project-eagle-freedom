@@ -8,7 +8,6 @@ const express = require('express')
     app.use(bodyParser.json())
 
     app.get('/api/getComp', control.getComp)
-
     app.get('/sorting', control.sortOutcomes)
 
 
