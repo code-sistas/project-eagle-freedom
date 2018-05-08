@@ -11,7 +11,6 @@ module.exports = {
             })
 
             //the object that gets sent: id, title, description, alignments, passed 
-
             res.send(result.data)
         })
 
