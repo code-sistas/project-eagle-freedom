@@ -9,7 +9,9 @@ module.exports = {
             linked["[outcomes]"].forEach((val,i,arr) => {
                 // console.log(val)
             })
-            //id, title, description, alignments, passed 
+
+            //the object that gets sent: id, title, description, alignments, passed 
+            
             res.send(result.data)
         })
 
