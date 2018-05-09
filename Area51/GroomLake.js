@@ -18,8 +18,8 @@ module.exports = {
 
     sortOutcomes: (req, res) => {
         //the api endpoint is paginated, so I used an IFFE and recursion to pull all the data we need, and saved it to allresults. Allresults is then sorted in the "else" statement, and sent to the frontend. 
-        var allresults = []
-        var num = 1;
+        let allresults = []
+        let num = 1;
         (function sort(num) {
             axios.get(`https://lms.devmountain.com/api/v1/courses/3/outcome_groups?page=${num}`, { headers: { Authorization: req.headers.authorization } }).then(results => {
                 axios.get(`https://lms.devmountain.com/api/v1/courses/3/outcome_results/?include="outcome_paths"`, { headers: { Authorization: req.headers.authorization } }).then(response => {
@@ -79,22 +79,22 @@ module.exports = {
                         let masteries = [...response.data.outcome_results]
 
                         outComes.forEach(val => {
-                            var mastery = false
-                            
+                            let mastery = false
+
                             for (let key in finalobj) {
-                                finalobj[key].forEach(parent =>{
-                                    
-                                    
+                                finalobj[key].forEach(parent => {
+
+
                                     if (val.parts[1].name === parent.title) {
 
                                         //checks to see if there's mastery
                                         masteries.forEach(master => {
                                             if (+master.links.learning_outcome === val.id) {
-                                                    mastery = true
+                                                mastery = true
                                             }
                                         })
-                                        
-                                        parent.parts.push({name: val.parts[2].name, mastery})
+
+                                        parent.parts.push({ name: val.parts[2].name, mastery })
                                     }
                                 })
                             }
@@ -104,6 +104,42 @@ module.exports = {
                     }
                 })
             }).catch(e => console.log(e))
+        })(num)
+    },
+
+    getAss: (req, res) => {
+
+        let allresults = []
+        let num = 1;
+
+        (function getPages(page) {
+            axios.get(`https://lms.devmountain.com/api/v1/courses/3/outcome_rollups/?user_ids=72&page=${page}`, { headers: { Authorization: req.headers.authorization } }).then(result => {
+                if (result.data.rollups.length > 0) {
+                    result.data.rollups[0].scores.forEach(val => {
+                        val.title === 'Assessment Competencies' ? allresults.push(val) : null
+                    })
+                    page++
+                    getPages(page)
+                } else {
+                    axios.get('https://lms.devmountain.com/api/v1/courses/3/assignments/132', { headers: { Authorization: req.headers.authorization } }).then(response => {
+                        let {rubric} = response.data
+                        let tempArr = []
+
+                        allresults.forEach(val => {
+                            rubric.forEach(parent => {
+                                let mastery = false
+                                let {id, description } = parent
+                                
+                                if (parent.outcome_id === +val.links.outcome) {
+                                    mastery = true
+                                }
+                                tempArr.push({id, mastery, description})
+                            })
+                        })
+                        res.send(tempArr)
+                    })
+                }
+            })
         })(num)
     }
 }

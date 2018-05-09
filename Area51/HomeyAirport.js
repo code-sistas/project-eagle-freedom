@@ -9,6 +9,7 @@ const express = require('express')
 
     app.get('/api/getComp', control.getComp)
     app.get('/sorting', control.sortOutcomes)
+    app.get('/asses', control.getAss)
 
 
     const SERVER_PORT = process.env.SERVER_PORT
