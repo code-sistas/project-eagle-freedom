@@ -23,85 +23,87 @@ module.exports = {
         (function sort(num) {
             axios.get(`https://lms.devmountain.com/api/v1/courses/3/outcome_groups?page=${num}`, { headers: { Authorization: req.headers.authorization } }).then(results => {
                 axios.get(`https://lms.devmountain.com/api/v1/courses/3/outcome_results/?include="outcome_paths"`, { headers: { Authorization: req.headers.authorization } }).then(response => {
-                    if (results.data.length > 0) {
-                        allresults.push(...results.data)
-                        num++
-                        sort(num)
-                    }
-                    else {
-                        //sort all data and send back
-                        var server = []
-                        var react = []
-                        var webdev = []
-                        var db = []
-                        var rejects = []
-                        allresults.forEach((outcome, index) => {
-                            //check to see if all properties needed exist.
-                            if (outcome.parent_outcome_group && outcome.id && outcome.title) {
-                                var tempobj = {
-                                    title: outcome.title,
-                                    category: outcome.parent_outcome_group.title,
-                                    id: outcome.id,
-                                    parentid: outcome.parent_outcome_group.id,
-                                    parts: []
-                                }
-                                switch (tempobj.parentid) {
-                                    case 1:
-                                        webdev.push(tempobj);
-                                        break;
-                                    case 7:
-                                        react.push(tempobj);
-                                        break;
-                                    case 41:
-                                        server.push(tempobj);
-                                        break;
-                                    case 42:
-                                        db.push(tempobj);
-                                        break;
-                                }
-                            }
-                            //this is for the ONE annoying, random outcome, that breaks everything, and that we don't need (and whose mother is the only one who loves him)
-                            else {
-                                rejects.push(outcome)
-                            }
-                        })
+                    axios.get('https://lms.devmountain.com/api/v1/courses/3/assignments', { headers: { Authorization: req.headers.authorization } }).then(finalres => {
 
-                        let finalobj = {
-                            react,
-                            server,
-                            webdev,
-                            db,
+                        if (results.data.length > 0) {
+                            allresults.push(...results.data)
+                            num++
+                            sort(num)
                         }
-
-                        //matching child competencies to their parent
-
-                        let outComes = [...response.data.linked['"outcome_paths"']]
-                        let masteries = [...response.data.outcome_results]
-
-                        outComes.forEach(val => {
-                            let mastery = false
-
-                            for (let key in finalobj) {
-                                finalobj[key].forEach(parent => {
-
-
-                                    if (val.parts[1].name === parent.title) {
-
-                                        //checks to see if there's mastery
-                                        masteries.forEach(master => {
-                                            if (+master.links.learning_outcome === val.id) {
-                                                mastery = true
-                                            }
-                                        })
-
-                                        parent.parts.push({ name: val.parts[2].name, mastery })
+                        else {
+                            //sort all data and send back
+                            var server = []
+                            var react = []
+                            var webdev = []
+                            var db = []
+                            var rejects = []
+                            allresults.forEach((outcome, index) => {
+                                //check to see if all properties needed exist.
+                                if (outcome.parent_outcome_group && outcome.id && outcome.title) {
+                                    var tempobj = {
+                                        title: outcome.title,
+                                        category: outcome.parent_outcome_group.title,
+                                        id: outcome.id,
+                                        parentid: outcome.parent_outcome_group.id,
+                                        parts: []
                                     }
-                                })
-                            }
-                        })
+                                    switch (tempobj.parentid) {
+                                        case 1:
+                                            webdev.push(tempobj);
+                                            break;
+                                        case 7:
+                                            react.push(tempobj);
+                                            break;
+                                        case 41:
+                                            server.push(tempobj);
+                                            break;
+                                        case 42:
+                                            db.push(tempobj);
+                                            break;
+                                    }
+                                }
+                                //this is for the ONE annoying, random outcome, that breaks everything, and that we don't need (and whose mother is the only one who loves him)
+                                else {
+                                    rejects.push(outcome)
+                                }
+                            })
 
-                        res.send(finalobj)
-                    }
+                            let finalobj = {
+                                react,
+                                server,
+                                webdev,
+                                db,
+                            }
+
+                            //matching child competencies to their parent
+
+                            let outComes = [...response.data.linked['"outcome_paths"']]
+                            let masteries = [...response.data.outcome_results]
+
+                            outComes.forEach(val => {
+                                let mastery = false
+
+                                for (let key in finalobj) {
+                                    finalobj[key].forEach(parent => {
+
+                                        if (val.parts[1].name === parent.title) {
+
+                                            //checks to see if there's mastery
+                                            masteries.forEach(master => {
+                                                if (+master.links.learning_outcome === val.id) {
+                                                    mastery = true
+                                                }
+                                            })
+
+                                            parent.parts.push({ name: val.parts[2].name, mastery })
+                                        }
+                                    })
+                                }
+                            })
+
+                            res.send(finalobj)
+                        }
+                    })
                 })
             }).catch(e => console.log(e))
         })(num)
@@ -122,19 +124,18 @@ module.exports = {
                     getPages(page)
                 } else {
                     axios.get('https://lms.devmountain.com/api/v1/courses/3/assignments/132', { headers: { Authorization: req.headers.authorization } }).then(response => {
-                        let {rubric} = response.data
+                        let { rubric } = response.data
                         let tempArr = []
 
-                        allresults.forEach(val => {
-                            rubric.forEach(parent => {
-                                let mastery = false
-                                let {id, description } = parent
-                                
-                                if (parent.outcome_id === +val.links.outcome) {
-                                    mastery = true
-                                }
-                                tempArr.push({id, mastery, description})
+                        rubric.forEach(parent => {
+                            let mastery = false
+                            let { id, description } = parent
+
+                            allresults.forEach(val => {
+                                if (parent.outcome_id === +val.links.outcome) mastery = true
                             })
+                            
+                            tempArr.push({ id, mastery, description })
                         })
                         res.send(tempArr)
                     })
