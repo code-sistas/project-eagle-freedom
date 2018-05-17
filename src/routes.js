@@ -16,10 +16,10 @@ export default class Routes extends Component {
         <div>
             <Switch>
                 <Route component={NavShell(AllTabs)} exact path="/" />
-                {/* <Route component={NavShell(JsAss)} exact path="/assessments" />                
+                <Route component={NavShell(JsAss)} exact path="/assessments" />                
                 <Route component={NavShell(Projects)} exact path="/projects" />                
                 <Route component={NavShell(SimTabs)} exact path="/sim" />                
-                <Route component={NavShell(JobPrep)} exact path="/job" />                 */}
+                <Route component={NavShell(JobPrep)} exact path="/job" />                
             </Switch>
         </div>
         )

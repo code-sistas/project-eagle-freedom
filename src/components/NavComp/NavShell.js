@@ -4,7 +4,7 @@ import Nav from './Nav'
 const NavShell = Page => {
     return props =>
         <div>
-            {/* <Nav /> */}
+            <Nav />
             <Page {...props}/>
         </div>
 }
