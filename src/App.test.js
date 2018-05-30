@@ -1,7 +1,7 @@
+//THESE ALL WORKED ON MY TEST BRANCH. I HAD TO COPY STUFF OVER TO ANOTHER BRANCH BECAUSE REASONS THAT ARE TOO LONG TO PUT HERE. THESE ARE NOW NOT WORKING BUT IT DOENS'T MATTER BECAUSE OUR BACKEND IS GOING TO CHANGE ANYWAY.
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import App from './App';
+
 dotenv = require("dotenv").config();
 const axios = require("axios");
 axios.defaults.headers.common["Authorization"] = `Bearer ${
