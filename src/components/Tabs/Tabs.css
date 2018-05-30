@@ -2,7 +2,6 @@
 
 .tab {
   width: 100vw;
-  /* border: 1px solid green; */
 }
 
 .tab-labels {
@@ -12,12 +11,10 @@
   justify-content: space-around;
   width: 80%;
   height: 20px;
-  /* border: 1px solid purple; */
 }
 
 .tab-label {
   height: 20px;
-  /* border: 1px solid pink; */
 }
 
 .tabs-content {
