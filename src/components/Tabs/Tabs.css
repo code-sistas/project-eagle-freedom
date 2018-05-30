@@ -1,0 +1,31 @@
+.tab{
+    width: 100vw;
+    /* border: 1px solid green; */
+}
+
+.tab-labels{
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 80%;
+    height: 20px;
+    /* border: 1px solid purple; */
+}
+
+.tab-label{
+    height: 20px;
+    /* border: 1px solid pink; */
+}
+
+.tabs-content{
+    padding: 20px;
+    border-top: 1px solid darkgray;
+    width: 80%;
+    margin: auto;
+}
+
+.active{
+    /* width: 20%; */
+    border-bottom: 4px solid blue;
+}
